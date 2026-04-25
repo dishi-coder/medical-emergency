@@ -8,6 +8,8 @@
 let currentTab = 'login';
 let otpMobile  = '';
 let countdownInterval = null;
+let currentAuthMode = 'login'; // 'login', 'register', or 'otp'
+let pendingAuthData = null;    // Store registration data before OTP
 
 // ── on page load ─────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -121,6 +123,15 @@ function handleLogin(e) {
     btn.disabled = false;
     btnTxt.textContent = 'Login to Account';
     spin.classList.add('hidden');
+    
+    // Set auth mode and prepare data
+    currentAuthMode = 'login';
+    pendingAuthData = {
+      name: 'Patient',
+      mobile: mobile,
+      password: password
+    };
+    
     showSuccess();
   }, 1800);
 }
@@ -188,6 +199,16 @@ function handleRegister(e) {
   setTimeout(() => {
     btn.disabled    = false;
     btn.textContent = 'Create Account';
+    
+    // Store registration data and set auth mode
+    currentAuthMode = 'register';
+    pendingAuthData = {
+      name: name,
+      mobile: mobile,
+      age: parseInt(age),
+      password: password
+    };
+    
     showSuccess();
   }, 2000);
 }
@@ -216,6 +237,12 @@ function switchToOTP() {
   }
 
   otpMobile = mobile;
+  // Save OTP mode data
+  pendingAuthData = {
+    name: 'Patient',
+    mobile: mobile
+  };
+  
   document.getElementById('otp-mobile-display').textContent = mobile;
   document.getElementById('login-form').classList.add('hidden');
   document.getElementById('otp-form').classList.remove('hidden');
@@ -260,6 +287,10 @@ function handleOTP(e) {
   setTimeout(() => {
     btn.disabled    = false;
     btn.textContent = 'Verify OTP';
+    
+    // Set auth mode to OTP login (already have mobile in pendingAuthData)
+    currentAuthMode = 'login';
+    
     showSuccess();
   }, 1500);
 }
@@ -372,14 +403,14 @@ function setupPasswordStrength() {
    SUCCESS STATE
    ════════════════════════════════════════════════ */
 function showSuccess() {
-   // Login save karo
-  localStorage.setItem('patient_logged_in', 'true');
-  localStorage.setItem('patient_name', 'Ravi Kumar');
-  
-  
-  
-  // Hide all forms
+  // Save data using Auth
+  if (currentAuthMode === 'register') {
+    Auth.register('patient', pendingAuthData);
+  } else {
+    Auth.login('patient', pendingAuthData);
+  }
 
+  // Hide all forms
   document.getElementById('login-form').classList.add('hidden');
   document.getElementById('register-form').classList.add('hidden');
   document.getElementById('otp-form').classList.add('hidden');
@@ -391,9 +422,9 @@ function showSuccess() {
     if (bar) bar.style.width = '100%';
   }, 100);
 
-  // Redirect after 2.2s (replace URL with your dashboard page)
+  // Redirect after 2.3s to dashboard
   setTimeout(() => {
     console.log('Redirecting to patient dashboard...');
-     window.location.href = 'patient-dashboard.html';
+    window.location.href = 'patient-dashboard.html';
   }, 2300);
 }

@@ -6,6 +6,8 @@
 
 let countdownInterval = null;
 let otpContact = '';
+let currentAuthMode = 'login'; // 'login', 'register', or 'otp'
+let pendingAuthData = null;    // Store registration data before OTP
 
 // ── Status messages shown after login ────────────
 const liveMessages = [
@@ -158,6 +160,17 @@ function handleLogin(e) {
     btn.disabled = false;
     btnTxt.textContent = 'Login to Dashboard';
     spin.classList.add('hidden');
+    
+    // Store login data and set auth mode
+    currentAuthMode = 'login';
+    pendingAuthData = {
+      name: 'Dr. ' + (contact.includes('@') ? contact.split('@')[0] : 'Doctor'),
+      doctorId: doctorId,
+      contact: contact,
+      specialisation: spec,
+      password: password
+    };
+    
     showSuccess();
   }, 1800);
 }
@@ -186,6 +199,12 @@ function openOTPFlow() {
   }
 
   otpContact = contact;
+  
+  // Save OTP mode data
+  pendingAuthData = {
+    name: 'Dr. ' + (contact.includes('@') ? contact.split('@')[0] : 'Doctor'),
+    contact: contact
+  };
 
   // Mask display: show only last 4 chars
   const masked = contact.slice(0, -4).replace(/./g, '*') + contact.slice(-4);
@@ -233,6 +252,10 @@ function handleOTP(e) {
   setTimeout(() => {
     btn.disabled    = false;
     btn.textContent = 'Verify & Login';
+    
+    // Set auth mode to OTP login (already have contact in pendingAuthData)
+    currentAuthMode = 'login';
+    
     showSuccess();
   }, 1500);
 }
@@ -356,6 +379,13 @@ function setupOTPBoxes() {
    SUCCESS STATE — with live status messages
    ════════════════════════════════════════════════ */
 function showSuccess() {
+  // Save data using Auth
+  if (currentAuthMode === 'register') {
+    Auth.register('doctor', pendingAuthData);
+  } else {
+    Auth.login('doctor', pendingAuthData);
+  }
+
   // Hide all forms
   ['login-form', 'otp-form', 'forgot-form', 'forgot-success']
     .forEach(id => document.getElementById(id).classList.add('hidden'));
@@ -384,6 +414,6 @@ function showSuccess() {
   // Redirect to doctor dashboard after 2.3s
   setTimeout(() => {
     console.log('Redirecting to doctor dashboard...');
-     window.location.href = 'doctor-dashboard.html';
+    window.location.href = 'doctor-dashboard.html';
   }, 2300);
 }

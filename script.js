@@ -7,9 +7,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-document.querySelector('.btn-blue').addEventListener('click', () => {
-  alert("Redirecting to Symptom Form...");
-});
+const sendBtn = document.getElementById("sendSymptomsBtn");
+
+if (sendBtn) {
+  sendBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+    if (isLoggedIn === "true") {
+      window.location.href = "patient-dashboard.html";
+    } else {
+      window.location.href = "patient-login.html";
+    }
+  });
+}
 
 const doctors = document.querySelectorAll('.available-badge');
 
@@ -100,7 +112,7 @@ if (dashboardQA) {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
 
     if (isLoggedIn === "true") {
-      window.location.href = "dashboard.html";
+      window.location.href = "patient-dashboard.html";
     } else {
       window.location.href = "patient-login.html";
     }
@@ -115,7 +127,7 @@ if (dashboardHero) {
     const isLoggedIn = localStorage.getItem("isLoggedIn");
 
     if (isLoggedIn === "true") {
-      window.location.href = "dashboard.html";
+      window.location.href = "patient-dashboard.html";
     } else {
       window.location.href = "patient-login.html";
     }
@@ -130,6 +142,21 @@ if (trackBtn) {
     window.location.href = "track-patient.html";
   });
 }
-window.onload = () => {
+if (typeof startTracking === "function") {
   startTracking();
-};
+}
+const qaSend = document.getElementById("qaSendSymptoms");
+
+if (qaSend) {
+  qaSend.addEventListener("click", function(e) {
+    e.preventDefault();
+
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+    if (isLoggedIn === "true") {
+      window.location.href = "patient-dashboard.html";
+    } else {
+      window.location.href = "patient-login.html";
+    }
+  });
+}

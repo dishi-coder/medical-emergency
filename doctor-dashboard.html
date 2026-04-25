@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doctor Dashboard — MediCare Hospital</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="patient-dashboard.css"/>
+  <style>
+    .doctor-stats { color: #f59e0b; }
+    .emergency-card { border-left: 4px solid #ef4444; }
+    .patient-list { display: grid; gap: 15px; }
+    .patient-item {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .patient-item:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    .emergency-active { background: #fee2e2; border-left: 4px solid #dc2626; }
+  </style>
+</head>
+<body>
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">Medi<span>Care</span></div>
+    <div class="sidebar-patient">
+      <div class="patient-avatar doctor-stats" id="sidebar-avatar">--</div>
+      <div>
+        <div class="patient-name" id="sidebar-name">Dr. Loading</div>
+        <div class="patient-id" id="sidebar-spec">Specialisation: --</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="showSection('overview',this)">
+        <span class="nav-icon">🏥</span> Overview
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('emergencies',this)">
+        <span class="nav-icon">🚨</span> Emergencies
+        <span class="nav-badge" id="emergency-badge">0</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('patients',this)">
+        <span class="nav-icon">👥</span> My Patients
+        <span class="nav-badge" id="patients-badge">0</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('predictions',this)">
+        <span class="nav-icon">🧠</span> AI Predictions
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('alerts-log',this)">
+        <span class="nav-icon">📋</span> Alert History
+      </a>
+    </nav>
+    <a href="#" class="sidebar-logout" onclick="Auth.logout()">← Logout</a>
+  </aside>
+
+  <!-- ── MAIN CONTENT ── -->
+  <div class="main">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <div>
+          <div class="topbar-title" id="page-title">Overview</div>
+          <div class="topbar-sub" id="topbar-greeting">Welcome back, Doctor</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="live-chip">
+          <div class="live-dot"></div>
+          System Online
+        </div>
+        <div class="emergency-btn">📊 Dashboard</div>
+        <div class="topbar-avatar" id="topbar-avatar">--</div>
+      </div>
+    </header>
+
+    <!-- ══ SECTION: OVERVIEW ══ -->
+    <section class="section active" id="sec-overview">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="color:#f59e0b;">👥</div>
+          <div class="stat-info">
+            <div class="stat-label">My Patients</div>
+            <div class="stat-value" id="stat-patients">0</div>
+            <div class="stat-meta" id="stat-patients-meta">Active</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="color:#ef4444;">🚨</div>
+          <div class="stat-info">
+            <div class="stat-label">Active Emergencies</div>
+            <div class="stat-value" id="stat-emergencies">0</div>
+            <div class="stat-meta" id="stat-emergencies-meta">Urgent</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="color:#8b5cf6;">🧠</div>
+          <div class="stat-info">
+            <div class="stat-label">AI Predictions Reviewed</div>
+            <div class="stat-value" id="stat-predictions">0</div>
+            <div class="stat-meta" id="stat-predictions-meta">Today</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="color:#06b6d4;">📈</div>
+          <div class="stat-info">
+            <div class="stat-label">Case Resolution Rate</div>
+            <div class="stat-value" id="stat-resolution">--</div>
+            <div class="stat-meta" id="stat-resolution-meta">This month</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">🚨 Active Emergencies</div>
+          <div id="active-emergencies-list">
+            <div style="text-align:center; padding:20px; color:#999;">No active emergencies</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">👥 Recent Patients</div>
+          <div id="recent-patients-list">
+            <div style="text-align:center; padding:20px; color:#999;">No patients yet</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SECTION: EMERGENCIES ══ -->
+    <section class="section" id="sec-emergencies">
+      <div class="card">
+        <div class="card-title">🚨 Emergency Alerts</div>
+        <div id="emergencies-table"></div>
+      </div>
+    </section>
+
+    <!-- ══ SECTION: PATIENTS ══ -->
+    <section class="section" id="sec-patients">
+      <div class="card">
+        <div class="card-title">👥 My Patients</div>
+        <div id="patients-table"></div>
+      </div>
+    </section>
+
+    <!-- ══ SECTION: PREDICTIONS ══ -->
+    <section class="section" id="sec-predictions">
+      <div class="card">
+        <div class="card-title">🧠 Recent AI Predictions</div>
+        <div id="predictions-table"></div>
+      </div>
+    </section>
+
+    <!-- ══ SECTION: ALERT HISTORY ══ -->
+    <section class="section" id="sec-alerts-log">
+      <div class="card">
+        <div class="card-title">📋 Alert History</div>
+        <div id="alerts-log-table"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="tg-toast" id="tg-toast"></div>
+
+  <script src="Auth.js"></script>
+  <script src="LoggingHelper.js"></script>
+  <script src="doctor-dashboard.js"></script>
+</body>
+</html>
