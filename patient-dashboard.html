@@ -6,6 +6,7 @@
   <title>Patient Dashboard — MediCare Hospital</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+  <script src="Auth.js"></script>
   <link rel="stylesheet" href="patient-dashboard.css"/>
 </head>
 <body>
@@ -17,31 +18,31 @@
       <div class="patient-avatar" id="sidebar-avatar">--</div>
       <div>
         <div class="patient-name" id="sidebar-name">Loading...</div>
-        <div class="patient-id" id="sidebar-id">ID: --</div>
+           <div class="patient-id" id="sidebar-id">ID: --</div>
       </div>
     </div>
     <nav class="sidebar-nav">
-      <a href="#" class="nav-item active" onclick="showSection('overview',this)">
+      <a href="#" class="nav-item active" onclick="showSection('overview',this);return false;">
         <span class="nav-icon">🏠</span> Overview
       </a>
-      <a href="#" class="nav-item" onclick="showSection('symptoms',this)">
+      <a href="#" class="nav-item" onclick="showSection('symptoms',this);return false;">
         <span class="nav-icon">🩺</span> Send Symptoms
       </a>
-      <a href="#" class="nav-item" onclick="showSection('ai-result',this)">
+      <a href="#" class="nav-item" onclick="showSection('ai-result',this);return false;">
         <span class="nav-icon">🧠</span> AI Results
       </a>
-      <a href="#" class="nav-item" onclick="showSection('reports',this)">
+      <a href="#" class="nav-item" onclick="showSection('reports',this);return false;">
         <span class="nav-icon">📋</span> My Reports
       </a>
-      <a href="#" class="nav-item" onclick="showSection('location',this)">
+      <a href="#" class="nav-item" onclick="showSection('location',this);return false;">
         <span class="nav-icon">📍</span> Live Location
       </a>
-      <a href="#" class="nav-item" onclick="showSection('alerts',this)">
+      <a href="#" class="nav-item" onclick="showSection('alerts',this);return false;">
         <span class="nav-icon">🔔</span> Alerts
-        <span class="nav-badge" id="alert-badge">0</span>
+        <span class="nav-badge" id="alert-badge">3</span>
       </a>
     </nav>
-    <a href="#" class="sidebar-logout" onclick="Auth.logout()">← Logout</a>
+    <a href="#" class="sidebar-logout">← Logout</a>
   </aside>
 
   <!-- ── MAIN CONTENT ── -->
@@ -53,7 +54,7 @@
         <button class="menu-btn" onclick="toggleSidebar()">☰</button>
         <div>
           <div class="topbar-title" id="page-title">Overview</div>
-          <div class="topbar-sub" id="topbar-greeting">Welcome back</div>
+           <div class="topbar-sub" id="topbar-greeting">Welcome back</div>
         </div>
       </div>
       <div class="topbar-right">
@@ -73,32 +74,32 @@
           <div class="stat-icon blue">🧠</div>
           <div class="stat-info">
             <div class="stat-label">Last AI Prediction</div>
-            <div class="stat-value" id="stat-disease">None yet</div>
-            <div class="stat-meta" id="stat-disease-time">--</div>
+            <div class="stat-value" id="stat-disease">Viral Fever</div>
+            <div class="stat-meta" id="stat-disease-time">Today, 2:14 PM</div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon amber">⚠️</div>
           <div class="stat-info">
             <div class="stat-label">Severity Level</div>
-            <div class="stat-value" id="stat-severity" style="color:#f59e0b">None</div>
-            <div class="stat-meta" id="stat-severity-score">--</div>
+            <div class="stat-value" id="stat-severity" style="color:#d97706">Moderate</div>
+            <div class="stat-meta" id="stat-severity-score">Confidence: 72%</div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon green">📋</div>
           <div class="stat-info">
             <div class="stat-label">Total Predictions</div>
-            <div class="stat-value" id="stat-count">0</div>
-            <div class="stat-meta" id="stat-count-meta">No data</div>
+            <div class="stat-value" id="stat-count">3</div>
+            <div class="stat-meta" id="stat-count-meta">Last: Today</div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon teal">🚨</div>
           <div class="stat-info">
             <div class="stat-label">Active Alerts</div>
-            <div class="stat-value" id="stat-alerts">0</div>
-            <div class="stat-meta" id="stat-alerts-meta">No emergencies</div>
+            <div class="stat-value" id="stat-alerts">3</div>
+            <div class="stat-meta" id="stat-alerts-meta">1 critical</div>
           </div>
         </div>
       </div>
@@ -106,23 +107,30 @@
       <div class="two-col">
         <div class="card">
           <div class="card-title">Latest AI Diagnosis</div>
-          <div class="diagnosis-name" id="diagnosis-name">No predictions yet</div>
-          <div class="diagnosis-sub" id="diagnosis-rec">--</div>
+          <div class="diagnosis-name" id="diagnosis-name">Viral Fever</div>
+          <div class="diagnosis-sub" id="diagnosis-rec">Recommended: General Physician</div>
           <div class="sev-bar-wrap">
             <div class="sev-bar-label">
               <span>Severity</span>
-              <span class="sev-text" id="sev-badge">None</span>
+              <span class="sev-text moderate" id="sev-badge">Moderate — 72</span>
             </div>
             <div class="sev-track">
-              <div class="sev-fill" id="sev-fill" style="width:0%"></div>
+              <div class="sev-fill moderate" id="sev-fill" style="width:72%"></div>
             </div>
             <div class="sev-ticks">
               <span>Low</span><span>Moderate</span><span>High</span><span>Critical</span>
             </div>
           </div>
+
+          <!-- ✅ FIXED: conditions-list is now properly self-contained -->
           <div class="conditions-list" id="conditions-list">
-            <div style="text-align:center; padding:20px; color:#999;">No diagnosis data available</div>
-          </div>
+            <div class="condition-row top">
+              <span class="condition-name">Viral Fever</span>
+              <div class="prob-bar"><div class="prob-fill" style="width:72%"></div></div>
+              <span class="prob-pct">72%</span>
+            </div>
+            <div class="condition-row">
+              <span class="condition-name">Dengue Fever</span>
               <div class="prob-bar"><div class="prob-fill" style="width:18%"></div></div>
               <span class="prob-pct">18%</span>
             </div>
@@ -182,7 +190,7 @@
       <div class="card" style="max-width:700px;margin:0 auto">
         <div class="card-title">Send Symptoms to Hospital AI</div>
         <p class="card-desc">Select your symptoms below. Our AI will predict the disease and alert the hospital instantly.</p>
-        <div class="symptom-groups" id="symptom-groups">
+        <div id="symptom-groups">
           <div class="symptom-group-label">Head & Neurological</div>
           <div class="symptom-grid">
             <label class="symptom-chip"><input type="checkbox" value="Severe_headache"/> Severe headache</label>
@@ -311,7 +319,6 @@
           </div>
         </div>
 
-        <!-- Right card: Hospitals + Telegram Alert Status -->
         <div class="card" id="hospital-card">
           <div class="card-title">
             Nearest Hospitals
@@ -329,15 +336,12 @@
           <div id="hosp-list" class="hosp-list hidden"></div>
           <button id="hosp-refresh-btn" class="hosp-refresh-btn hidden" onclick="fetchNearbyHospitals()">🔄 Refresh Hospitals</button>
 
-          <!-- ══ TELEGRAM ALERT STATUS — Enhanced with Twilio ══ -->
           <div class="tg-section-title">Telegram Alert Status</div>
           <div id="tg-alerts-wrap">
-
-            <!-- Alert Card 1: Family -->
             <div class="tg-alert-card" id="tg-card-family" style="--tg-accent:#16a34a;">
               <div class="tg-card-header">
                 <div class="tg-card-left">
-                  <div class="tg-icon-wrap" style="background:rgba(22,163,74,0.12);">📱</div>
+                  <div class="tg-icon-wrap" style="background:rgba(22,163,74,0.1);">📱</div>
                   <div>
                     <p class="tg-card-title">Alert sent to family</p>
                     <p class="tg-card-desc" id="tg-desc-family">Viral Fever · Moderate · 2 hrs ago</p>
@@ -347,14 +351,10 @@
                   <span class="tg-badge delivered" id="tg-badge-family">Delivered</span>
                 </div>
               </div>
-
-              <!-- Timeline -->
               <div class="tg-timeline">
                 <div class="tg-tl-row">
                   <div class="tg-tl-col">
-                    <div class="tg-tl-dot done">
-                      <svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#4ade80" stroke-width="1.8"/></svg>
-                    </div>
+                    <div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div>
                     <div class="tg-tl-line"></div>
                   </div>
                   <div class="tg-tl-content">
@@ -364,9 +364,7 @@
                 </div>
                 <div class="tg-tl-row">
                   <div class="tg-tl-col">
-                    <div class="tg-tl-dot done">
-                      <svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#4ade80" stroke-width="1.8"/></svg>
-                    </div>
+                    <div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div>
                     <div class="tg-tl-line"></div>
                   </div>
                   <div class="tg-tl-content">
@@ -376,9 +374,7 @@
                 </div>
                 <div class="tg-tl-row">
                   <div class="tg-tl-col">
-                    <div class="tg-tl-dot done">
-                      <svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#4ade80" stroke-width="1.8"/></svg>
-                    </div>
+                    <div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div>
                     <div class="tg-tl-line"></div>
                   </div>
                   <div class="tg-tl-content">
@@ -387,32 +383,25 @@
                   </div>
                 </div>
                 <div class="tg-tl-row">
-                  <div class="tg-tl-col">
-                    <div class="tg-tl-dot empty"></div>
-                  </div>
+                  <div class="tg-tl-col"><div class="tg-tl-dot empty"></div></div>
                   <div class="tg-tl-content">
                     <span class="tg-tl-label muted">Doctor response</span>
                     <span class="tg-tl-sub">Awaiting acknowledgement</span>
                   </div>
                 </div>
               </div>
-
               <div class="tg-card-footer">
                 <button class="tg-resend-btn" id="tg-resend-family" onclick="resendTelegramAlert('family')">
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                    <path d="M1 6a5 5 0 1 0 5-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                    <path d="M6 1L4 3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6a5 5 0 1 0 5-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6 1L4 3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   Resend Alert
                 </button>
               </div>
             </div>
 
-            <!-- Alert Card 2: Hospital -->
             <div class="tg-alert-card" id="tg-card-hospital" style="--tg-accent:#2563eb;">
               <div class="tg-card-header">
                 <div class="tg-card-left">
-                  <div class="tg-icon-wrap" style="background:rgba(37,99,235,0.12);">🏥</div>
+                  <div class="tg-icon-wrap" style="background:rgba(37,99,235,0.1);">🏥</div>
                   <div>
                     <p class="tg-card-title">Hospital dashboard notified</p>
                     <p class="tg-card-desc" id="tg-desc-hospital">Dr. Sunita Mehta — General Physician</p>
@@ -422,14 +411,10 @@
                   <span class="tg-badge sent" id="tg-badge-hospital">Sent</span>
                 </div>
               </div>
-
-              <!-- Timeline -->
               <div class="tg-timeline">
                 <div class="tg-tl-row">
                   <div class="tg-tl-col">
-                    <div class="tg-tl-dot done">
-                      <svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#4ade80" stroke-width="1.8"/></svg>
-                    </div>
+                    <div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div>
                     <div class="tg-tl-line"></div>
                   </div>
                   <div class="tg-tl-content">
@@ -448,38 +433,28 @@
                   </div>
                 </div>
                 <div class="tg-tl-row">
-                  <div class="tg-tl-col">
-                    <div class="tg-tl-dot empty"></div>
-                    <div class="tg-tl-line"></div>
-                  </div>
+                  <div class="tg-tl-col"><div class="tg-tl-dot empty"></div><div class="tg-tl-line"></div></div>
                   <div class="tg-tl-content">
                     <span class="tg-tl-label muted">Delivery confirmation</span>
                     <span class="tg-tl-sub">Waiting for webhook...</span>
                   </div>
                 </div>
                 <div class="tg-tl-row">
-                  <div class="tg-tl-col">
-                    <div class="tg-tl-dot empty"></div>
-                  </div>
+                  <div class="tg-tl-col"><div class="tg-tl-dot empty"></div></div>
                   <div class="tg-tl-content">
                     <span class="tg-tl-label muted">Doctor response</span>
                     <span class="tg-tl-sub">Not yet received</span>
                   </div>
                 </div>
               </div>
-
               <div class="tg-card-footer">
                 <button class="tg-resend-btn" id="tg-resend-hospital" onclick="resendTelegramAlert('hospital')">
-                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-                    <path d="M1 6a5 5 0 1 0 5-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-                    <path d="M6 1L4 3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6a5 5 0 1 0 5-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6 1L4 3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                   Resend Alert
                 </button>
               </div>
             </div>
-
-          </div><!-- end #tg-alerts-wrap -->
+          </div>
         </div>
       </div>
     </section>
@@ -521,25 +496,14 @@
             </div>
             <span class="alert-badge success-b">Ready</span>
           </div>
-          <div class="alert-item success">
-            <div class="alert-dot green"></div>
-            <div class="alert-body">
-              <div class="alert-title">New AI diagnosis saved to your reports</div>
-              <div class="alert-time">3 days ago</div>
-            </div>
-            <span class="alert-badge success-b">Saved</span>
-          </div>
         </div>
 
-        <!-- ══ TELEGRAM ALERT STATUS — Full Enhanced (Alerts section) ══ -->
         <div class="tg-section-title" style="margin-top:28px;">Telegram Alert Status</div>
         <div id="tg-alerts-wrap-2">
-
-          <!-- Card 1 -->
           <div class="tg-alert-card" style="--tg-accent:#16a34a;">
             <div class="tg-card-header">
               <div class="tg-card-left">
-                <div class="tg-icon-wrap" style="background:rgba(22,163,74,0.12);">📱</div>
+                <div class="tg-icon-wrap" style="background:rgba(22,163,74,0.1);">📱</div>
                 <div>
                   <p class="tg-card-title">Alert sent to family</p>
                   <p class="tg-card-desc">Viral Fever · Moderate · 2 hrs ago</p>
@@ -551,15 +515,15 @@
             </div>
             <div class="tg-timeline">
               <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#4ade80" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
+                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
                 <div class="tg-tl-content"><span class="tg-tl-label">Alert triggered</span><span class="tg-tl-sub">Diagnosis logged — 2:14 PM</span></div>
               </div>
               <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#4ade80" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
+                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
                 <div class="tg-tl-content"><span class="tg-tl-label">Message sent</span><span class="tg-tl-sub">Twilio dispatched — 2:14 PM</span></div>
               </div>
               <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#4ade80" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
+                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
                 <div class="tg-tl-content"><span class="tg-tl-label">Delivered</span><span class="tg-tl-sub">Twilio webhook confirmed — 2:15 PM</span></div>
               </div>
               <div class="tg-tl-row">
@@ -575,11 +539,10 @@
             </div>
           </div>
 
-          <!-- Card 2 -->
           <div class="tg-alert-card" style="--tg-accent:#2563eb;margin-top:12px;">
             <div class="tg-card-header">
               <div class="tg-card-left">
-                <div class="tg-icon-wrap" style="background:rgba(37,99,235,0.12);">🏥</div>
+                <div class="tg-icon-wrap" style="background:rgba(37,99,235,0.1);">🏥</div>
                 <div>
                   <p class="tg-card-title">Hospital dashboard notified</p>
                   <p class="tg-card-desc">Dr. Sunita Mehta — General Physician</p>
@@ -591,7 +554,7 @@
             </div>
             <div class="tg-timeline">
               <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#4ade80" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
+                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
                 <div class="tg-tl-content"><span class="tg-tl-label">Alert triggered</span><span class="tg-tl-sub">Case assigned — 2:14 PM</span></div>
               </div>
               <div class="tg-tl-row">
@@ -615,11 +578,10 @@
             </div>
           </div>
 
-          <!-- Card 3: Failed example -->
           <div class="tg-alert-card" style="--tg-accent:#dc2626;margin-top:12px;">
             <div class="tg-card-header">
               <div class="tg-card-left">
-                <div class="tg-icon-wrap" style="background:rgba(220,38,38,0.12);">⚠️</div>
+                <div class="tg-icon-wrap" style="background:rgba(220,38,38,0.1);">⚠️</div>
                 <div>
                   <p class="tg-card-title">Emergency contact unreachable</p>
                   <p class="tg-card-desc">Blood Pressure · High · 4 hrs ago</p>
@@ -631,16 +593,16 @@
             </div>
             <div class="tg-timeline">
               <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#4ade80" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
+                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
                 <div class="tg-tl-content"><span class="tg-tl-label">Alert triggered</span><span class="tg-tl-sub">Vitals threshold exceeded — 12:03 PM</span></div>
               </div>
               <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#4ade80" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
+                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
                 <div class="tg-tl-content"><span class="tg-tl-label">Message sent</span><span class="tg-tl-sub">Twilio dispatched — 12:03 PM</span></div>
               </div>
               <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot fail"><svg viewBox="0 0 8 8" width="8" height="8"><line x1="2" y1="2" x2="6" y2="6" stroke="#f87171" stroke-width="1.5"/><line x1="6" y1="2" x2="2" y2="6" stroke="#f87171" stroke-width="1.5"/></svg></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label" style="color:#f87171;">Failed — Error 30006</span><span class="tg-tl-sub">Landline unreachable — 12:04 PM</span></div>
+                <div class="tg-tl-col"><div class="tg-tl-dot fail"><svg viewBox="0 0 8 8" width="8" height="8"><line x1="2" y1="2" x2="6" y2="6" stroke="#dc2626" stroke-width="1.5"/><line x1="6" y1="2" x2="2" y2="6" stroke="#dc2626" stroke-width="1.5"/></svg></div></div>
+                <div class="tg-tl-content"><span class="tg-tl-label" style="color:#dc2626;">Failed — Error 30006</span><span class="tg-tl-sub">Landline unreachable — 12:04 PM</span></div>
               </div>
             </div>
             <div class="tg-card-footer">
@@ -650,8 +612,7 @@
               </button>
             </div>
           </div>
-
-        </div><!-- end #tg-alerts-wrap-2 -->
+        </div>
       </div>
     </section>
 
@@ -672,8 +633,9 @@
   <div class="tg-toast" id="tg-toast"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-  <script src="Auth.js"></script>
-  <script src="LoggingHelper.js"></script>
+
+    
+
   <script src="patient-dashboard.js"></script>
 </body>
 </html>

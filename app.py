@@ -72,9 +72,9 @@ def predict():
     try:
         data = request.get_json()
 
-        symptoms_in = data.get("symptoms", [])
+        symptoms_in  = data.get("symptoms", [])
         patient_name = data.get("patient_name", "Unknown")
-        patient_age = data.get("patient_age", "N/A")
+        patient_age  = data.get("patient_age", "N/A")
 
         if not symptoms_in:
             return jsonify({"error": "No symptoms"}), 400
@@ -87,28 +87,43 @@ def predict():
                 input_vec[feature_cols.index(s)] = 1
 
         # Prediction
-        probs = model.predict_proba([input_vec])[0]
+        probs    = model.predict_proba([input_vec])[0]
         pred_idx = np.argmax(probs)
 
-        disease = le.inverse_transform([pred_idx])[0]
+        disease    = le.inverse_transform([pred_idx])[0]
         confidence = round(float(probs[pred_idx]) * 100, 2)
-        doctor = disease_doctor_map.get(disease, "General Physician")
-        severity = disease_severity_map.get(disease, "Medium")
+        doctor     = disease_doctor_map.get(disease, "General Physician")
+        severity   = disease_severity_map.get(disease, "Medium")
 
-        # ✅ SAVE TO DB
+        # Top 3 predictions
+        top3_idx = np.argsort(probs)[::-1][:3]
+        top3 = [
+            {
+                "disease":    le.inverse_transform([i])[0],
+                "confidence": round(float(probs[i]) * 100, 2)
+            }
+            for i in top3_idx
+        ]
+
+        # Save to DB
         cursor.execute("""
-        INSERT INTO reports (patient_name, patient_age, disease, doctor, severity, confidence)
-        VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO reports (patient_name, patient_age, disease, doctor, severity, confidence)
+            VALUES (?, ?, ?, ?, ?, ?)
         """, (patient_name, patient_age, disease, doctor, severity, confidence))
-
         conn.commit()
 
         return jsonify({
             "success": True,
-            "disease": disease,
-            "doctor": doctor,
-            "severity": severity,
-            "confidence": confidence
+            "prediction": {
+                "disease":    disease,
+                "doctor":     doctor,
+                "severity":   severity,
+                "confidence": confidence
+            },
+            "top3_predictions": top3,
+            "emergency_alert": {
+                "message": f"Patient {patient_name} has symptoms of {disease}. Severity: {severity}. Please consult a {doctor}."
+            }
         })
 
     except Exception as e:
