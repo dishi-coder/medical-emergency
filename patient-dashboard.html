@@ -18,7 +18,7 @@
       <div class="patient-avatar" id="sidebar-avatar">--</div>
       <div>
         <div class="patient-name" id="sidebar-name">Loading...</div>
-           <div class="patient-id" id="sidebar-id">ID: --</div>
+        <div class="patient-id" id="sidebar-id">ID: --</div>
       </div>
     </div>
     <nav class="sidebar-nav">
@@ -39,7 +39,7 @@
       </a>
       <a href="#" class="nav-item" onclick="showSection('alerts',this);return false;">
         <span class="nav-icon">🔔</span> Alerts
-        <span class="nav-badge" id="alert-badge">3</span>
+        <span class="nav-badge" id="alert-badge">0</span>
       </a>
     </nav>
     <a href="#" class="sidebar-logout">← Logout</a>
@@ -54,7 +54,7 @@
         <button class="menu-btn" onclick="toggleSidebar()">☰</button>
         <div>
           <div class="topbar-title" id="page-title">Overview</div>
-           <div class="topbar-sub" id="topbar-greeting">Welcome back</div>
+          <div class="topbar-sub" id="topbar-greeting">Welcome back</div>
         </div>
       </div>
       <div class="topbar-right">
@@ -74,32 +74,32 @@
           <div class="stat-icon blue">🧠</div>
           <div class="stat-info">
             <div class="stat-label">Last AI Prediction</div>
-            <div class="stat-value" id="stat-disease">Viral Fever</div>
-            <div class="stat-meta" id="stat-disease-time">Today, 2:14 PM</div>
+            <div class="stat-value" id="stat-disease">—</div>
+            <div class="stat-meta" id="stat-disease-time">No predictions yet</div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon amber">⚠️</div>
           <div class="stat-info">
             <div class="stat-label">Severity Level</div>
-            <div class="stat-value" id="stat-severity" style="color:#d97706">Moderate</div>
-            <div class="stat-meta" id="stat-severity-score">Confidence: 72%</div>
+            <div class="stat-value" id="stat-severity">—</div>
+            <div class="stat-meta" id="stat-severity-score">—</div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon green">📋</div>
           <div class="stat-info">
             <div class="stat-label">Total Predictions</div>
-            <div class="stat-value" id="stat-count">3</div>
-            <div class="stat-meta" id="stat-count-meta">Last: Today</div>
+            <div class="stat-value" id="stat-count">0</div>
+            <div class="stat-meta" id="stat-count-meta">No predictions yet</div>
           </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon teal">🚨</div>
           <div class="stat-info">
             <div class="stat-label">Active Alerts</div>
-            <div class="stat-value" id="stat-alerts">3</div>
-            <div class="stat-meta" id="stat-alerts-meta">1 critical</div>
+            <div class="stat-value" id="stat-alerts">0</div>
+            <div class="stat-meta" id="stat-alerts-meta">No alerts</div>
           </div>
         </div>
       </div>
@@ -107,37 +107,23 @@
       <div class="two-col">
         <div class="card">
           <div class="card-title">Latest AI Diagnosis</div>
-          <div class="diagnosis-name" id="diagnosis-name">Viral Fever</div>
-          <div class="diagnosis-sub" id="diagnosis-rec">Recommended: General Physician</div>
+          <div class="diagnosis-name" id="diagnosis-name">No predictions yet</div>
+          <div class="diagnosis-sub" id="diagnosis-rec">Send your symptoms to get an AI diagnosis</div>
           <div class="sev-bar-wrap">
             <div class="sev-bar-label">
               <span>Severity</span>
-              <span class="sev-text moderate" id="sev-badge">Moderate — 72</span>
+              <span class="sev-text" id="sev-badge">—</span>
             </div>
             <div class="sev-track">
-              <div class="sev-fill moderate" id="sev-fill" style="width:72%"></div>
+              <div class="sev-fill" id="sev-fill" style="width:0%"></div>
             </div>
             <div class="sev-ticks">
               <span>Low</span><span>Moderate</span><span>High</span><span>Critical</span>
             </div>
           </div>
-
-          <!-- ✅ FIXED: conditions-list is now properly self-contained -->
           <div class="conditions-list" id="conditions-list">
-            <div class="condition-row top">
-              <span class="condition-name">Viral Fever</span>
-              <div class="prob-bar"><div class="prob-fill" style="width:72%"></div></div>
-              <span class="prob-pct">72%</span>
-            </div>
-            <div class="condition-row">
-              <span class="condition-name">Dengue Fever</span>
-              <div class="prob-bar"><div class="prob-fill" style="width:18%"></div></div>
-              <span class="prob-pct">18%</span>
-            </div>
-            <div class="condition-row">
-              <span class="condition-name">Malaria</span>
-              <div class="prob-bar"><div class="prob-fill" style="width:10%"></div></div>
-              <span class="prob-pct">10%</span>
+            <div style="text-align:center;padding:16px;color:#64748b;font-size:13px">
+              📋 No predictions yet. Please analyze your symptoms!
             </div>
           </div>
         </div>
@@ -145,41 +131,15 @@
         <div class="card">
           <div class="card-title">Quick Actions</div>
           <div class="quick-btns">
-            <button class="qbtn blue" onclick="showSection('symptoms', document.querySelector('[onclick*=symptoms]'))">🩺 Send New Symptoms</button>
-            <button class="qbtn teal" onclick="showSection('location', document.querySelector('[onclick*=location]'))">📍 Share Live Location</button>
-            <button class="qbtn amber" onclick="showSection('reports', document.querySelector('[onclick*=reports]'))">📋 View My Reports</button>
-            <button class="qbtn red" onclick="triggerEmergency()">🚨 Emergency Alert</button>
+            <!-- ✅ FIX: navTo() use karo — location tracking ke dauran bhi kaam karega -->
+            <button class="qbtn blue"  onclick="navTo('symptoms')">🩺 Send New Symptoms</button>
+            <button class="qbtn teal"  onclick="navTo('location')">📍 Share Live Location</button>
+            <button class="qbtn amber" onclick="navTo('reports')">📋 View My Reports</button>
+            <button class="qbtn red"   onclick="triggerEmergency()">🚨 Emergency Alert</button>
           </div>
           <div class="card-title" style="margin-top:20px">Recent Activity</div>
           <div class="activity-list">
-            <div class="activity-item">
-              <div class="activity-dot blue"></div>
-              <div>
-                <div class="activity-text">AI diagnosis completed — Viral Fever</div>
-                <div class="activity-time">2 hours ago</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot green"></div>
-              <div>
-                <div class="activity-text">Location shared with hospital</div>
-                <div class="activity-time">2 hours ago</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot amber"></div>
-              <div>
-                <div class="activity-text">Telegram alert sent to family</div>
-                <div class="activity-time">2 hours ago</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-dot gray"></div>
-              <div>
-                <div class="activity-text">Lab report uploaded</div>
-                <div class="activity-time">3 days ago</div>
-              </div>
-            </div>
+            <div style="color:#64748b;font-size:13px;padding:8px 0">Loading activity...</div>
           </div>
         </div>
       </div>
@@ -191,21 +151,21 @@
         <div class="card-title">Send Symptoms to Hospital AI</div>
         <p class="card-desc">Select your symptoms below. Our AI will predict the disease and alert the hospital instantly.</p>
         <div id="symptom-groups">
-          <div class="symptom-group-label">Head & Neurological</div>
+          <div class="symptom-group-label">Head &amp; Neurological</div>
           <div class="symptom-grid">
             <label class="symptom-chip"><input type="checkbox" value="Severe_headache"/> Severe headache</label>
             <label class="symptom-chip"><input type="checkbox" value="Dizziness"/> Dizziness</label>
             <label class="symptom-chip"><input type="checkbox" value="Confusion"/> Confusion</label>
-            <label class="symptom-chip"><input type="checkbox" value="Blurred vision"/> Blurred vision</label>
+            <label class="symptom-chip"><input type="checkbox" value="Blurred_vision"/> Blurred vision</label>
           </div>
-          <div class="symptom-group-label">Chest & Heart</div>
+          <div class="symptom-group-label">Chest &amp; Heart</div>
           <div class="symptom-grid">
             <label class="symptom-chip"><input type="checkbox" value="Chest_pain"/> Chest pain</label>
             <label class="symptom-chip"><input type="checkbox" value="Shortness_breath"/> Shortness of breath</label>
             <label class="symptom-chip"><input type="checkbox" value="Rapid_heartbeat"/> Rapid heartbeat</label>
             <label class="symptom-chip"><input type="checkbox" value="Palpitations"/> Palpitations</label>
           </div>
-          <div class="symptom-group-label">Fever & Infection</div>
+          <div class="symptom-group-label">Fever &amp; Infection</div>
           <div class="symptom-grid">
             <label class="symptom-chip"><input type="checkbox" value="High_fever"/> High fever</label>
             <label class="symptom-chip"><input type="checkbox" value="Chills"/> Chills</label>
@@ -218,7 +178,7 @@
           <div class="symptom-grid">
             <label class="symptom-chip"><input type="checkbox" value="Nausea"/> Nausea</label>
             <label class="symptom-chip"><input type="checkbox" value="Vomiting"/> Vomiting</label>
-            <label class="symptom-chip"><input type="checkbox" value="Abdominal pain"/> Abdominal pain</label>
+            <label class="symptom-chip"><input type="checkbox" value="Abdominal_pain"/> Abdominal pain</label>
             <label class="symptom-chip"><input type="checkbox" value="Diarrhea"/> Diarrhea</label>
           </div>
         </div>
@@ -238,7 +198,9 @@
           <div class="empty-state">
             <div class="empty-icon">🧠</div>
             <div class="empty-text">No prediction yet. Go to Send Symptoms and analyze first.</div>
-            <button class="submit-btn-dash" style="width:auto;padding:10px 24px;margin-top:16px" onclick="showSection('symptoms',document.querySelector('[onclick*=symptoms]'))">Go to Symptoms →</button>
+            <!-- ✅ FIX: navTo() use karo -->
+            <button class="submit-btn-dash" style="width:auto;padding:10px 24px;margin-top:16px"
+              onclick="navTo('symptoms')">Go to Symptoms →</button>
           </div>
         </div>
       </div>
@@ -249,38 +211,8 @@
       <div class="card">
         <div class="card-title">My Medical Reports</div>
         <div class="reports-table">
-          <div class="report-header">
-            <span>Report Name</span><span>Date</span><span>Type</span><span>Status</span><span>Action</span>
-          </div>
-          <div class="report-row">
-            <span>Blood CBC Test</span><span>10 Apr 2025</span>
-            <span class="type-badge lab">Lab</span>
-            <span class="status-badge ready">Ready</span>
-            <button class="dl-btn">⬇ Download</button>
-          </div>
-          <div class="report-row">
-            <span>Chest X-Ray</span><span>08 Apr 2025</span>
-            <span class="type-badge radio">Radiology</span>
-            <span class="status-badge ready">Ready</span>
-            <button class="dl-btn">⬇ Download</button>
-          </div>
-          <div class="report-row">
-            <span>AI Diagnosis — Viral Fever</span><span>06 Apr 2025</span>
-            <span class="type-badge ai">AI</span>
-            <span class="status-badge ready">Ready</span>
-            <button class="dl-btn">⬇ Download</button>
-          </div>
-          <div class="report-row">
-            <span>ECG Report</span><span>01 Apr 2025</span>
-            <span class="type-badge lab">Lab</span>
-            <span class="status-badge pending">Pending</span>
-            <button class="dl-btn" disabled style="opacity:0.4">⬇ Download</button>
-          </div>
-          <div class="report-row">
-            <span>Urine Analysis</span><span>28 Mar 2025</span>
-            <span class="type-badge lab">Lab</span>
-            <span class="status-badge ready">Ready</span>
-            <button class="dl-btn">⬇ Download</button>
+          <div style="text-align:center;padding:32px;color:#64748b">
+            Loading reports...
           </div>
         </div>
       </div>
@@ -291,7 +223,7 @@
       <div class="two-col">
         <div class="card">
           <div class="card-title">Live GPS Location</div>
-          <div id="dash-status-bar">🔍 Locating... please wait</div>
+          <div id="dash-status-bar">Click "Start Tracking" to begin</div>
           <div id="dash-map-placeholder">
             <div style="font-size:32px;margin-bottom:8px">📍</div>
             <div>Click "Start Tracking" to load live map</div>
@@ -313,10 +245,13 @@
             <div class="loc-dot sharing" id="dash-loc-dot"></div>
             <span id="loc-text">Location sharing — Active</span>
           </div>
-          <div class="location-btns">
-            <button class="qbtn teal" id="dash-track-btn" onclick="dashStartTracking()">📍 Start Tracking</button>
-            <button class="qbtn red" id="dash-stop-btn" onclick="dashStopTracking()" style="display:none">⏹ Stop</button>
-          </div>
+          <button type="button" class="qbtn teal" id="dash-track-btn"
+onclick="event.preventDefault(); event.stopPropagation(); dashStartTracking();">
+📍 Start Tracking</button>
+
+<button type="button" class="qbtn red" id="dash-stop-btn"
+onclick="event.preventDefault(); dashStopTracking();"
+style="display:none">⏹ Stop</button>
         </div>
 
         <div class="card" id="hospital-card">
@@ -326,7 +261,7 @@
           </div>
           <div id="hosp-loading" class="hosp-loading">
             <div class="hosp-spinner"></div>
-            <span>Start Tracking click karo hospitals load honge...</span>
+            <span>Click "Start Tracking" to load nearby hospitals</span>
           </div>
           <div id="hosp-error" class="hosp-error hidden">
             <div style="font-size:24px">⚠️</div>
@@ -344,11 +279,11 @@
                   <div class="tg-icon-wrap" style="background:rgba(22,163,74,0.1);">📱</div>
                   <div>
                     <p class="tg-card-title">Alert sent to family</p>
-                    <p class="tg-card-desc" id="tg-desc-family">Viral Fever · Moderate · 2 hrs ago</p>
+                    <p class="tg-card-desc" id="tg-desc-family">—</p>
                   </div>
                 </div>
                 <div class="tg-card-right">
-                  <span class="tg-badge delivered" id="tg-badge-family">Delivered</span>
+                  <span class="tg-badge queued" id="tg-badge-family">Pending</span>
                 </div>
               </div>
               <div class="tg-timeline">
@@ -359,27 +294,27 @@
                   </div>
                   <div class="tg-tl-content">
                     <span class="tg-tl-label">Alert triggered</span>
-                    <span class="tg-tl-sub">Diagnosis logged — 2:14 PM</span>
+                    <span class="tg-tl-sub">Diagnosis logged</span>
                   </div>
                 </div>
                 <div class="tg-tl-row">
                   <div class="tg-tl-col">
-                    <div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div>
+                    <div class="tg-tl-dot active"></div>
                     <div class="tg-tl-line"></div>
                   </div>
                   <div class="tg-tl-content">
                     <span class="tg-tl-label">Message sent</span>
-                    <span class="tg-tl-sub">Twilio dispatched — 2:14 PM</span>
+                    <span class="tg-tl-sub">Telegram dispatched</span>
                   </div>
                 </div>
                 <div class="tg-tl-row">
                   <div class="tg-tl-col">
-                    <div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div>
+                    <div class="tg-tl-dot empty"></div>
                     <div class="tg-tl-line"></div>
                   </div>
                   <div class="tg-tl-content">
-                    <span class="tg-tl-label">Delivered</span>
-                    <span class="tg-tl-sub">Twilio webhook confirmed — 2:15 PM</span>
+                    <span class="tg-tl-label muted">Delivered</span>
+                    <span class="tg-tl-sub">Waiting for confirmation</span>
                   </div>
                 </div>
                 <div class="tg-tl-row">
@@ -404,11 +339,11 @@
                   <div class="tg-icon-wrap" style="background:rgba(37,99,235,0.1);">🏥</div>
                   <div>
                     <p class="tg-card-title">Hospital dashboard notified</p>
-                    <p class="tg-card-desc" id="tg-desc-hospital">Dr. Sunita Mehta — General Physician</p>
+                    <p class="tg-card-desc" id="tg-desc-hospital">—</p>
                   </div>
                 </div>
                 <div class="tg-card-right">
-                  <span class="tg-badge sent" id="tg-badge-hospital">Sent</span>
+                  <span class="tg-badge queued" id="tg-badge-hospital">Pending</span>
                 </div>
               </div>
               <div class="tg-timeline">
@@ -419,7 +354,7 @@
                   </div>
                   <div class="tg-tl-content">
                     <span class="tg-tl-label">Alert triggered</span>
-                    <span class="tg-tl-sub">Case assigned — 2:14 PM</span>
+                    <span class="tg-tl-sub">Case assigned</span>
                   </div>
                 </div>
                 <div class="tg-tl-row">
@@ -429,14 +364,14 @@
                   </div>
                   <div class="tg-tl-content">
                     <span class="tg-tl-label">Message sent</span>
-                    <span class="tg-tl-sub">Twilio in transit — 2:14 PM</span>
+                    <span class="tg-tl-sub">In transit</span>
                   </div>
                 </div>
                 <div class="tg-tl-row">
                   <div class="tg-tl-col"><div class="tg-tl-dot empty"></div><div class="tg-tl-line"></div></div>
                   <div class="tg-tl-content">
                     <span class="tg-tl-label muted">Delivery confirmation</span>
-                    <span class="tg-tl-sub">Waiting for webhook...</span>
+                    <span class="tg-tl-sub">Waiting for webhook</span>
                   </div>
                 </div>
                 <div class="tg-tl-row">
@@ -462,73 +397,26 @@
     <!-- ══ SECTION: ALERTS ══ -->
     <section class="section" id="sec-alerts">
       <div class="card">
-        <div class="card-title">My Alerts & Notifications</div>
-        <div class="alert-list">
-          <div class="alert-item critical">
-            <div class="alert-dot red"></div>
-            <div class="alert-body">
-              <div class="alert-title">AI detected high severity — Chest pain reported</div>
-              <div class="alert-time">Today, 10:42 AM</div>
-            </div>
-            <span class="alert-badge critical-b">Critical</span>
-          </div>
-          <div class="alert-item warning">
-            <div class="alert-dot amber"></div>
-            <div class="alert-body">
-              <div class="alert-title">Telegram alert sent to your family</div>
-              <div class="alert-time">Today, 10:43 AM</div>
-            </div>
-            <span class="alert-badge warning-b">Sent</span>
-          </div>
-          <div class="alert-item info">
-            <div class="alert-dot blue"></div>
-            <div class="alert-body">
-              <div class="alert-title">Doctor assigned: Dr. Sunita Mehta</div>
-              <div class="alert-time">Today, 10:44 AM</div>
-            </div>
-            <span class="alert-badge info-b">Assigned</span>
-          </div>
-          <div class="alert-item success">
-            <div class="alert-dot green"></div>
-            <div class="alert-body">
-              <div class="alert-title">Lab report — Blood CBC ready to download</div>
-              <div class="alert-time">3 days ago</div>
-            </div>
-            <span class="alert-badge success-b">Ready</span>
+        <div class="card-title">My Alerts &amp; Notifications</div>
+        <div class="alert-list" id="alerts-list">
+          <div style="text-align:center;padding:32px;color:#64748b">
+            Loading alerts...
           </div>
         </div>
 
         <div class="tg-section-title" style="margin-top:28px;">Telegram Alert Status</div>
         <div id="tg-alerts-wrap-2">
-          <div class="tg-alert-card" style="--tg-accent:#16a34a;">
+          <div class="tg-alert-card" id="tg-card-family2" style="--tg-accent:#16a34a;">
             <div class="tg-card-header">
               <div class="tg-card-left">
                 <div class="tg-icon-wrap" style="background:rgba(22,163,74,0.1);">📱</div>
                 <div>
                   <p class="tg-card-title">Alert sent to family</p>
-                  <p class="tg-card-desc">Viral Fever · Moderate · 2 hrs ago</p>
+                  <p class="tg-card-desc" id="tg-desc2-family">—</p>
                 </div>
               </div>
               <div class="tg-card-right">
-                <span class="tg-badge delivered" id="tg-badge2-family">Delivered</span>
-              </div>
-            </div>
-            <div class="tg-timeline">
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label">Alert triggered</span><span class="tg-tl-sub">Diagnosis logged — 2:14 PM</span></div>
-              </div>
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label">Message sent</span><span class="tg-tl-sub">Twilio dispatched — 2:14 PM</span></div>
-              </div>
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label">Delivered</span><span class="tg-tl-sub">Twilio webhook confirmed — 2:15 PM</span></div>
-              </div>
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot empty"></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label muted">Doctor response</span><span class="tg-tl-sub">Awaiting acknowledgement</span></div>
+                <span class="tg-badge queued" id="tg-badge2-family">Pending</span>
               </div>
             </div>
             <div class="tg-card-footer">
@@ -545,70 +433,17 @@
                 <div class="tg-icon-wrap" style="background:rgba(37,99,235,0.1);">🏥</div>
                 <div>
                   <p class="tg-card-title">Hospital dashboard notified</p>
-                  <p class="tg-card-desc">Dr. Sunita Mehta — General Physician</p>
+                  <p class="tg-card-desc" id="tg-desc2-hospital">—</p>
                 </div>
               </div>
               <div class="tg-card-right">
-                <span class="tg-badge sent" id="tg-badge2-hospital">Sent</span>
-              </div>
-            </div>
-            <div class="tg-timeline">
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label">Alert triggered</span><span class="tg-tl-sub">Case assigned — 2:14 PM</span></div>
-              </div>
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot active"></div><div class="tg-tl-line"></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label">Message sent</span><span class="tg-tl-sub">Twilio in transit — 2:14 PM</span></div>
-              </div>
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot empty"></div><div class="tg-tl-line"></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label muted">Delivery confirmation</span><span class="tg-tl-sub">Waiting for webhook...</span></div>
-              </div>
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot empty"></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label muted">Doctor response</span><span class="tg-tl-sub">Not yet received</span></div>
+                <span class="tg-badge queued" id="tg-badge2-hospital">Pending</span>
               </div>
             </div>
             <div class="tg-card-footer">
               <button class="tg-resend-btn" id="tg-resend2-hospital" onclick="resendTelegramAlert2('hospital')">
                 <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6a5 5 0 1 0 5-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6 1L4 3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Resend Alert
-              </button>
-            </div>
-          </div>
-
-          <div class="tg-alert-card" style="--tg-accent:#dc2626;margin-top:12px;">
-            <div class="tg-card-header">
-              <div class="tg-card-left">
-                <div class="tg-icon-wrap" style="background:rgba(220,38,38,0.1);">⚠️</div>
-                <div>
-                  <p class="tg-card-title">Emergency contact unreachable</p>
-                  <p class="tg-card-desc">Blood Pressure · High · 4 hrs ago</p>
-                </div>
-              </div>
-              <div class="tg-card-right">
-                <span class="tg-badge failed" id="tg-badge2-emergency">Failed</span>
-              </div>
-            </div>
-            <div class="tg-timeline">
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label">Alert triggered</span><span class="tg-tl-sub">Vitals threshold exceeded — 12:03 PM</span></div>
-              </div>
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot done"><svg viewBox="0 0 8 8" width="8" height="8"><polyline points="1,4 3,6 7,2" fill="none" stroke="#16a34a" stroke-width="1.8"/></svg></div><div class="tg-tl-line"></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label">Message sent</span><span class="tg-tl-sub">Twilio dispatched — 12:03 PM</span></div>
-              </div>
-              <div class="tg-tl-row">
-                <div class="tg-tl-col"><div class="tg-tl-dot fail"><svg viewBox="0 0 8 8" width="8" height="8"><line x1="2" y1="2" x2="6" y2="6" stroke="#dc2626" stroke-width="1.5"/><line x1="6" y1="2" x2="2" y2="6" stroke="#dc2626" stroke-width="1.5"/></svg></div></div>
-                <div class="tg-tl-content"><span class="tg-tl-label" style="color:#dc2626;">Failed — Error 30006</span><span class="tg-tl-sub">Landline unreachable — 12:04 PM</span></div>
-              </div>
-            </div>
-            <div class="tg-card-footer">
-              <button class="tg-resend-btn danger" id="tg-resend2-emergency" onclick="resendTelegramAlert2('emergency')">
-                <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M1 6a5 5 0 1 0 5-5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6 1L4 3l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Retry Alert
               </button>
             </div>
           </div>
@@ -633,9 +468,6 @@
   <div class="tg-toast" id="tg-toast"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-
-    
-
   <script src="patient-dashboard.js"></script>
 </body>
 </html>
